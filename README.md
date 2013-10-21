@@ -8,7 +8,13 @@ This is a rendition of which has been modified by Robert M. Ryan on October 21, 
 
 3. Upgrage Minizip from 1.01e to 1.01h
 
-4. Minor fixes
+4. Minor fixes, including:
+
+ - Delegate methods were not getting called because of missing colon in `@respondsToSelector`;
+ 
+ - Replaced long since deprecated methods with current ones; and
+ 
+ - Tweaked code to prevent immaterial compiler warnings.
 
 For more information, please see the [Class Hierarchy](http://robertmryan.github.io/ZipArchive/Classes/ZipArchive.html)
 
