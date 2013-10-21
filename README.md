@@ -8,7 +8,7 @@ This is a rendition of which has been modified by Robert M. Ryan on October 21, 
 
 3. Minor fixes
 
-For more information, please see the [Class Hierarchy](http://robertmryan.github.io/ZipArchive/Classes/ZipArchive.html]
+For more information, please see the [Class Hierarchy](http://robertmryan.github.io/ZipArchive/Classes/ZipArchive.html)
 
 ### License
 
