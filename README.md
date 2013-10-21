@@ -10,11 +10,11 @@ This is a rendition of which has been modified by Robert M. Ryan on October 21, 
 
 4. Minor fixes, including:
 
-    - Delegate methods were not getting called because of missing colon in `@respondsToSelector`;
+   - Delegate methods were not getting called because of missing colon in `@respondsToSelector`;
  
-    - Replaced long since deprecated methods with current ones; and
+   - Replaced long since deprecated methods with current ones; and
  
-    - Tweaked code to prevent immaterial compiler warnings.
+   - Tweaked code to prevent immaterial compiler warnings.
 
 For more information, please see the [Class Hierarchy](http://robertmryan.github.io/ZipArchive/Classes/ZipArchive.html)
 
