@@ -12,17 +12,20 @@
 #import "zconf.h"
 
 
+@interface ZipArchive ()
+{
+@private
+	zipFile		_zipFile;
+	unzFile		_unzFile;
 
-@interface ZipArchive (Private)
+	NSString*   _password;
+}
 
--(void) OutputErrorMessage:(NSString*) msg;
--(BOOL) OverWrite:(NSString*) file;
--(NSDate*) Date1980;
 @end
 
 
-
 @implementation ZipArchive
+
 @synthesize delegate = _delegate;
 
 -(id) init
@@ -36,13 +39,13 @@
 
 -(void) dealloc
 {
-	[self CloseZipFile2];
+	[self closeZipFile2];
 #if !__has_feature(objc_arc)
 	[super dealloc];
 #endif
 }
 
--(BOOL) CreateZipFile2:(NSString*) zipFile
+-(BOOL) createZipFile2:(NSString*) zipFile
 {
 	_zipFile = zipOpen( (const char*)[zipFile UTF8String], 0 );
 	if( !_zipFile ) 
@@ -50,10 +53,10 @@
 	return YES;
 }
 
--(BOOL) CreateZipFile2:(NSString*) zipFile Password:(NSString*) password
+-(BOOL) createZipFile2:(NSString*) zipFile password:(NSString*) password
 {
 	_password = password;
-	return [self CreateZipFile2:zipFile];
+	return [self createZipFile2:zipFile];
 }
 
 -(BOOL) addFileToZip:(NSString*) file newname:(NSString*) newname;
@@ -145,7 +148,7 @@
 	return YES;
 }
 
--(BOOL) CloseZipFile2
+-(BOOL) closeZipFile2
 {
 	_password = nil;
 	if( _zipFile==NULL )
@@ -155,7 +158,7 @@
 	return ret;
 }
 
--(BOOL) UnzipOpenFile:(NSString*) zipFile
+-(BOOL) unzipOpenFile:(NSString*) zipFile
 {
 	_unzFile = unzOpen( (const char*)[zipFile UTF8String] );
 	if( _unzFile )
@@ -169,13 +172,13 @@
 	return _unzFile!=NULL;
 }
 
--(BOOL) UnzipOpenFile:(NSString*) zipFile Password:(NSString*) password
+-(BOOL) unzipOpenFile:(NSString*) zipFile password:(NSString*) password
 {
 	_password = password;
-	return [self UnzipOpenFile:zipFile];
+	return [self unzipOpenFile:zipFile];
 }
 
--(BOOL) UnzipFileTo:(NSString*) path overWrite:(BOOL) overwrite
+-(BOOL) unzipFileTo:(NSString*) path overwrite:(BOOL) overwrite
 {
 	BOOL success = YES;
 	int ret = unzGoToFirstFile( _unzFile );
@@ -183,7 +186,7 @@
 	NSFileManager* fman = [NSFileManager defaultManager];
 	if( ret!=UNZ_OK )
 	{
-		[self OutputErrorMessage:@"Failed"];
+		[self outputErrorMessage:@"Failed"];
 	}
 	
 	do{
@@ -193,7 +196,7 @@
 			ret = unzOpenCurrentFilePassword( _unzFile, [_password cStringUsingEncoding:NSASCIIStringEncoding] );
 		if( ret!=UNZ_OK )
 		{
-			[self OutputErrorMessage:@"Error occurs"];
+			[self outputErrorMessage:@"Error occurs"];
 			success = NO;
 			break;
 		}
@@ -203,7 +206,7 @@
 		ret = unzGetCurrentFileInfo(_unzFile, &fileInfo, NULL, 0, NULL, 0, NULL, 0);
 		if( ret!=UNZ_OK )
 		{
-			[self OutputErrorMessage:@"Error occurs while getting file info"];
+			[self outputErrorMessage:@"Error occurs while getting file info"];
 			success = NO;
 			unzCloseCurrentFile( _unzFile );
 			break;
@@ -230,7 +233,7 @@
 			[fman createDirectoryAtPath:[fullPath stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
 		if( [fman fileExistsAtPath:fullPath] && !isDirectory && !overwrite )
 		{
-			if( ![self OverWrite:fullPath] )
+			if( ![self overWrite:fullPath] )
 			{
 				unzCloseCurrentFile( _unzFile );
 				ret = unzGoToNextFile( _unzFile );
@@ -247,7 +250,7 @@
 			}
 			else if( read<0 )
 			{
-				[self OutputErrorMessage:@"Failed to reading zip file"];
+				[self outputErrorMessage:@"Failed to reading zip file"];
 				break;
 			}
 			else 
@@ -299,7 +302,7 @@
 	return success;
 }
 
--(BOOL) UnzipCloseFile
+-(BOOL) unzipCloseFile
 {
 	_password = nil;
 	if( _unzFile )
@@ -308,21 +311,21 @@
 }
 
 #pragma mark wrapper for delegate
--(void) OutputErrorMessage:(NSString*) msg
+-(void) outputErrorMessage:(NSString*) msg
 {
-	if( _delegate && [_delegate respondsToSelector:@selector(ErrorMessage:)] )
-		[_delegate ErrorMessage:msg];
+	if( _delegate && [_delegate respondsToSelector:@selector(errorMessage:)] )
+		[_delegate errorMessage:msg];
 }
 
--(BOOL) OverWrite:(NSString*) file
+-(BOOL) overWrite:(NSString*) file
 {
-	if( _delegate && [_delegate respondsToSelector:@selector(OverWriteOperation:)] )
-		return [_delegate OverWriteOperation:file];
+	if( _delegate && [_delegate respondsToSelector:@selector(overWriteOperation:)] )
+		return [_delegate overWriteOperation:file];
 	return YES;
 }
 
 #pragma mark get NSDate object for 1980-01-01
--(NSDate*) Date1980
+-(NSDate*) date1980
 {
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
 	[comps setDay:1];
