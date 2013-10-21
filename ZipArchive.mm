@@ -37,7 +37,9 @@
 -(void) dealloc
 {
 	[self CloseZipFile2];
+#if !__has_feature(objc_arc)
 	[super dealloc];
+#endif
 }
 
 -(BOOL) CreateZipFile2:(NSString*) zipFile
@@ -64,8 +66,12 @@
 	
 	zip_fileinfo zipInfo = {0};
 //	zipInfo.dosDate = (unsigned long) current;
-	
-	NSDictionary* attr = [[NSFileManager defaultManager] fileAttributesAtPath:file traverseLink:YES];
+
+    NSString *path = [file stringByResolvingSymlinksInPath];
+    NSError *error;
+	NSDictionary* attr = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
+    NSAssert(error, @"%s: attributesOfItemAtPath error: %@", __FUNCTION__, error);
+
 	if( attr )
 	{
 		NSDate* fileDate = (NSDate*)[attr objectForKey:NSFileModificationDate];
@@ -157,7 +163,7 @@
 		unz_global_info  globalInfo = {0};
 		if( unzGetGlobalInfo(_unzFile, &globalInfo )==UNZ_OK )
 		{
-			NSLog([NSString stringWithFormat:@"%d entries in the zip file",globalInfo.number_entry] );
+			NSLog(@"%lu entries in the zip file", (long unsigned)globalInfo.number_entry);
 		}
 	}
 	return _unzFile!=NULL;
@@ -207,7 +213,7 @@
 		filename[fileInfo.size_filename] = '\0';
 		
 		// check if it contains directory
-		NSString * strPath = [NSString  stringWithCString:filename];
+		NSString * strPath = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding];
 		BOOL isDirectory = NO;
 		if( filename[fileInfo.size_filename-1]=='/' || filename[fileInfo.size_filename-1]=='\\')
 			isDirectory = YES;
@@ -266,11 +272,11 @@
 			NSCalendar *gregorian = [[NSCalendar alloc] 
 									 initWithCalendarIdentifier:NSGregorianCalendar];
 			
-			orgDate = [gregorian dateFromComponents:dc] ;
+			orgDate = [gregorian dateFromComponents:dc];
+#if !__has_feature(objc_arc)
 			[dc release];
 			[gregorian release];
-			//}}
-			
+#endif
 			
 			NSDictionary* attr = [NSDictionary dictionaryWithObject:orgDate forKey:NSFileModificationDate]; //[[NSFileManager defaultManager] fileAttributesAtPath:fullPath traverseLink:YES];
 			if( attr )
@@ -304,13 +310,13 @@
 #pragma mark wrapper for delegate
 -(void) OutputErrorMessage:(NSString*) msg
 {
-	if( _delegate && [_delegate respondsToSelector:@selector(ErrorMessage)] )
+	if( _delegate && [_delegate respondsToSelector:@selector(ErrorMessage:)] )
 		[_delegate ErrorMessage:msg];
 }
 
 -(BOOL) OverWrite:(NSString*) file
 {
-	if( _delegate && [_delegate respondsToSelector:@selector(OverWriteOperation)] )
+	if( _delegate && [_delegate respondsToSelector:@selector(OverWriteOperation:)] )
 		return [_delegate OverWriteOperation:file];
 	return YES;
 }
@@ -326,8 +332,11 @@
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDate *date = [gregorian dateFromComponents:comps];
 	
+#if !__has_feature(objc_arc)
 	[comps release];
 	[gregorian release];
+#endif
+    
 	return date;
 }
 
