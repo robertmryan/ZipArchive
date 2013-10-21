@@ -6,7 +6,7 @@ This is a rendition of which has been modified by Robert M. Ryan on October 21, 
 
 2. Conform to [Cocoa Naming Conventions](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingMethods.html)
 
-3. Upgrage Minizip from 1.01e to 1.01h
+3. Upgrade Minizip from 1.01e to 1.01h
 
 4. Minor fixes, including:
 
@@ -16,7 +16,7 @@ This is a rendition of which has been modified by Robert M. Ryan on October 21, 
  
    - Tweaked code to prevent immaterial compiler warnings.
 
-For more information, please see the [Class Hierarchy](http://robertmryan.github.io/ZipArchive/Classes/ZipArchive.html)
+For more documentation and example, please see the [Class Hierarchy](http://robertmryan.github.io/ZipArchive/Classes/ZipArchive.html).
 
 ### License
 
