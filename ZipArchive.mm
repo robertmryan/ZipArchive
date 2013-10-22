@@ -39,13 +39,13 @@
 
 -(void) dealloc
 {
-	[self closeZipFile2];
+	[self closeZipFile];
 #if !__has_feature(objc_arc)
 	[super dealloc];
 #endif
 }
 
--(BOOL) createZipFile2:(NSString*) zipFile
+-(BOOL) createZipFile:(NSString*) zipFile
 {
 	_zipFile = zipOpen( (const char*)[zipFile UTF8String], 0 );
 	if( !_zipFile ) 
@@ -53,10 +53,10 @@
 	return YES;
 }
 
--(BOOL) createZipFile2:(NSString*) zipFile password:(NSString*) password
+-(BOOL) createZipFile:(NSString*) zipFile password:(NSString*) password
 {
 	_password = password;
-	return [self createZipFile2:zipFile];
+	return [self createZipFile:zipFile];
 }
 
 -(BOOL) addFileToZip:(NSString*) file newname:(NSString*) newname;
@@ -148,7 +148,7 @@
 	return YES;
 }
 
--(BOOL) closeZipFile2
+-(BOOL) closeZipFile
 {
 	_password = nil;
 	if( _zipFile==NULL )

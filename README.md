@@ -4,7 +4,7 @@ This is a rendition of which has been modified by Robert M. Ryan on October 21, 
 
 1. Include ARC support
 
-2. Conform to [Cocoa Naming Conventions](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingMethods.html)
+2. Conform to [Cocoa Naming Conventions](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingMethods.html).
 
 3. Upgrade Minizip from 1.01e to 1.01h
 
@@ -15,6 +15,8 @@ This is a rendition of which has been modified by Robert M. Ryan on October 21, 
    - Replaced long since deprecated methods with current ones; and
  
    - Tweaked code to prevent immaterial compiler warnings.
+   
+   - Remove "2" from ZIP creation method names.
 
 For more documentation and example, please see the [Class Hierarchy](http://robertmryan.github.io/ZipArchive/Classes/ZipArchive.html).
 

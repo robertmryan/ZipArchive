@@ -111,7 +111,7 @@
  * @return Returns `YES` if successful. `NO` if failure.
  */
 
--(BOOL) createZipFile2:(NSString*) zipFile;
+-(BOOL) createZipFile:(NSString*) zipFile;
 
 /** Create zip file with password
  *
@@ -121,7 +121,7 @@
  * @return Returns `YES` if successful. `NO` if failure.
  */
 
--(BOOL) createZipFile2:(NSString*) zipFile password:(NSString*) password;
+-(BOOL) createZipFile:(NSString*) zipFile password:(NSString*) password;
 
 /** Add file to zip file
  *
@@ -138,7 +138,7 @@
  * @return Returns `YES` if successful. `NO` if failure.
  */
 
--(BOOL) closeZipFile2;
+-(BOOL) closeZipFile;
 
 /// @name Unzip files
 
