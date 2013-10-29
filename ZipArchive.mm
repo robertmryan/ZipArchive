@@ -73,7 +73,7 @@
     NSString *path = [file stringByResolvingSymlinksInPath];
     NSError *error;
 	NSDictionary* attr = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:&error];
-    NSAssert(error, @"%s: attributesOfItemAtPath error: %@", __FUNCTION__, error);
+    NSAssert(error == nil, @"%s: attributesOfItemAtPath error: %@", __FUNCTION__, error);
 
 	if( attr )
 	{
